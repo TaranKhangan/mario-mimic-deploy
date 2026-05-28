@@ -26,3 +26,34 @@ jobs:
 
       - name: Push Docker Image
         run: docker push taran03/mario-app:v2
+
+      - name: Deploy to App Server 1 (with rollback)
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST_1 }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd /home/ubuntu
+
+            echo "Deploying v2..."
+
+            docker pull taran03/mario-app:v2
+
+            docker stop mario || true
+            docker rm mario || true
+
+            docker run -d --name mario -p 8080:8080 taran03/mario-app:v2
+
+            sleep 10
+
+            echo "Health check..."
+
+            curl -f http://localhost:8080 || (
+              echo "FAILED → Rolling back to v1"
+
+              docker stop mario || true
+              docker rm mario || true
+
+              docker run -d --name mario -p 8080:8080 taran03/mario-app:v1
+            )
