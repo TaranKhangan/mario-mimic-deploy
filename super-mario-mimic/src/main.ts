@@ -57,7 +57,7 @@ class GameApp {
         if (this.game.level > 2) {
             if (gameOverReason) gameOverReason.textContent = 'Congratulations! You completed the game!';
         } else {
-            if (gameOverReason) gameOverReason.textContent = 'You ran out of lives!';
+            if (gameOverReason) gameOverReason.textContent = 'GAME OVER JAAN!!';//You ran out of lives
         }
         
         if (gameOverDiv) gameOverDiv.classList.remove('hidden');
