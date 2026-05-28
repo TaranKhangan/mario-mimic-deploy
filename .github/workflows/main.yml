@@ -22,31 +22,7 @@ jobs:
       - name: Build Docker Image
         run: |
           cd super-mario-mimic
-          docker build -t taran03/mario-app:latest .
+          docker build -t taran03/mario-app:v2 .
 
       - name: Push Docker Image
-        run: docker push taran03/mario-app:latest
-
-      - name: Deploy to App Server 1
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.EC2_HOST_1 }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            cd /home/ubuntu
-            docker pull taran03/mario-app:latest
-            docker compose down
-            docker compose up -d
-
-      - name: Deploy to App Server 2
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.EC2_HOST_2 }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            cd /home/ubuntu
-            docker pull taran03/mario-app:latest
-            docker compose down
-            docker compose up -d
+        run: docker push taran03/mario-app:v2
