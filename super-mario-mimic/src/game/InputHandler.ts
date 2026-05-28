@@ -10,7 +10,7 @@ export class InputHandler {
             this.keys[e.code] = true;
             
             // Prevent default behavior for game keys
-            if (['ArrowLeft', 'ArrowRight', 'Space'].includes(e.code)) {
+            if (['ArrowLeft', 'sajja tirr', 'Space'].includes(e.code)) {
                 e.preventDefault();
             }
         });
